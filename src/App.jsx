@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import jsx from './assets/jsx-ui.png';
 import CoreConcepts from './components/CoreConcepts.jsx';
 import TabButtons from './components/TabButtons.jsx';
-import { CORE_CONCEPTS } from './data';
+import { CORE_CONCEPTS, EXAMPLES } from './data';
 
 const random = ["Fundamental", "Crucial", "Absolute"];
 
@@ -11,7 +11,7 @@ function getRandom(max) {
 }
 
 function App() {
-  const [selectedButton, setSelectedButton] = useState('');
+  const [selectedButton, setSelectedButton] = useState('components');
   const randomm = random[getRandom(2)];
 
   function handleButtonClick(selectButton) {
@@ -33,7 +33,10 @@ function App() {
         <section id="core-concepts">
           <h2>Core Concept</h2>
           <ul>
-            <CoreConcepts
+            <ul>
+              {CORE_CONCEPTS.map((conceptItem) => (<CoreConcepts {...conceptItem} />))}
+            </ul>
+            {/* <CoreConcepts
               title={CORE_CONCEPTS[0].title}
               description={CORE_CONCEPTS[0].description}
               image={CORE_CONCEPTS[0].image}
@@ -48,22 +51,27 @@ function App() {
               description={CORE_CONCEPTS[2].description}
               image={CORE_CONCEPTS[2].image}
             />
-            <CoreConcepts {...CORE_CONCEPTS[3]} />
+            <CoreConcepts {...CORE_CONCEPTS[3]} /> */}
           </ul>
         </section>
 
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButtons onSelect={() => handleButtonClick("Components")}>Components</TabButtons>
-            <TabButtons onSelect={() => handleButtonClick("Props")}>Props</TabButtons>
-            <TabButtons onSelect={() => handleButtonClick("JSX")}>JSX</TabButtons>
-            <TabButtons onSelect={() => handleButtonClick("State")}>State</TabButtons>
+            <TabButtons isSelected={selectedButton === "components"} onSelect={() => handleButtonClick("components")}>Components</TabButtons>
+            <TabButtons isSelected={selectedButton === "props"} onSelect={() => handleButtonClick("props")}>Props</TabButtons>
+            <TabButtons isSelected={selectedButton === "jsx"} onSelect={() => handleButtonClick("jsx")}>JSX</TabButtons>
+            <TabButtons isSelected={selectedButton === "state"} onSelect={() => handleButtonClick("state")}>State</TabButtons>
           </menu>
-          <section>
-            {/* Show text that is written in the button */}
-            {selectedButton && <p>{selectedButton}</p>}
-          </section>
+          {/* {!selectedButton && <p>Please select</p> } */}
+          {selectedButton && (<div id="tab-content">
+            <h3>{EXAMPLES[selectedButton].title}</h3>
+            <p>{EXAMPLES[selectedButton].description}</p>
+            <code>{EXAMPLES[selectedButton].code}</code>
+
+          </div>)}
+
+
         </section>
       </main>
       <main>
